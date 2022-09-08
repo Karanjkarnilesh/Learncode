@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Expr\Cast\Object_;
+
 class Users extends CI_Controller
 {
 
@@ -10,6 +12,7 @@ class Users extends CI_Controller
     }
     public function index()
     {
+        $this->load->view('welcome_message');
     }
 
     public function signup()
@@ -56,18 +59,27 @@ class Users extends CI_Controller
         if ($this->form_validation->run() == TRUE) {
             $data = [
                 'email' => $this->input->post("email"),
-                'password' =>sha1($this->input->post("password")),
+                'password' => sha1($this->input->post("password")),
             ];
-            $user=$this->User_model->getuser($data);
-           
-            if($user)
-            {
-                $user['isloggedIn']=TRUE;
 
-                $this->session->userdata('userdata',$user);
-                redirect('welcome_message',$user);
+            $user = $this->User_model->getuser($data);
+
+            if ($user) {
+                $user=[
+                    'user_id'=>$user[0]->user_id,
+                    'user_profile'=>$user[0]->user_id,
+                    'user_profile'=>$user[0]->profile,
+                    'username'=>$user[0]->username,
+                    'emai'=> $user[0]->email,
+                ];
+                $this->session->set_userdata('user',(Object)$user);
             }
         }
+        $this->load->view('user/login');
+    }
+    public function logout()
+    {
+        $this->session->unset_userdata('user');
         $this->load->view('user/login');
     }
 }

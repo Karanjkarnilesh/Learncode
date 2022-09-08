@@ -18,8 +18,13 @@
             </button>
 
             <div class="d-flex">
-                <?php  var_dump($this->session->userdata('userdata'))?>
+                <?php  if($this->session->userdata('user'))
+                {?>
+                <a class="navbar-brand" href="/">Welcome <?php echo $this->session->userdata('user')->username; ?></a> |<a class="navbar-brand" href="logout">Logout</a>
+                <?php }else{?>
               <p class=""><a class="navbar-brand" href="<?php echo base_url('users/login')?>">Login</a>|<a class="navbar-brand" href="<?php echo base_url('users/signup')?>">&nbsp;&nbsp;Signup</a></p>
+            <?php }?>
+
             </div>
         </div>
         </div>

@@ -16,16 +16,19 @@ class User_model extends CI_Model
         }
 
     }
-    public function getuser($where=array())
+    public function getuser($args)
     {
-        if(empty($where))
-        {
-            return array();
-        }
-        $this->db->where($where);
-        $results=$this->db->get($this->tbl_users);
-        return ($results->result());
        
+        if ($args) {
+			$this->db->where($args);
+		}
 
+		$result =  $this->db->get($this->tbl_users);
+
+		if ($result) {
+            return $result->result();
+           
+		}
+		return array();
     }
 }
